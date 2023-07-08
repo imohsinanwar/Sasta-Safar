@@ -1,4 +1,4 @@
-# quixotic-snail-9802
+# Sasta Safar
 
  This website is designed to help you plan and organize your summer vacations. Whether you're looking for
 
@@ -62,18 +62,3 @@ Render.com to create mock API.
 <!-- ************************************** -->
 
 
-
-Contributors-->
-
-
-This project is developed by the following contributors:
-
-Sabir Alam - fw25_201
-
-Md Adil - fw26_268
-
-Priya Patole - fw26_030
-
-Achal Gaddamwar - fw26_039
-
-Neha Singh - fw25_310
