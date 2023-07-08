@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Page</title>
+    <link rel="stylesheet" href="styles/navbar.css" />
+    <link rel="stylesheet" href="styles/checkout.css" />
+    <link rel="stylesheet" href="styles/loader.css">
+</head>
+
+<body>
+    <nav id="nav_parent" class="navbar"></nav>
+
+    <section id="mainSection">
+        <h2>Order Summary</h2>
+        <div class="overallContainer">
+            <div class="chosenPackage"></div>
+            <div class="cartInfo">
+                <div class="bookingInfo">
+                    <h3>Finalize Booking</h3>
+                    <div id="orderSummary">
+                        <p>Total Order Value</p>
+                        <p id="finalCost">price</p>
+                    </div>
+                    <h3>Payment Mode</h3>
+                    <div id="paymentOption">
+                        <label for="cash">
+                            <input type="radio" name="payment" onclick="selectPayment(this.value)" id="cash"
+                                value="cash">Cash</label>
+                    </div>
+                    <div id="paymentDetails"></div>
+                    <div id="dateSelection">
+                        <select name="selectDate" id="chooseDate">
+                            <option value="">Choose Date</option>
+                            <option value="2023/06/30">Fri June 30, 2023</option>
+                            <option value="2023/07/04">Tue July 4, 2023</option>
+                            <option value="2023/07/10">Mon July 10, 2023</option>
+                        </select>
+                    </div>
+                    <div id="confirmationButton">
+                        <button onclick="finalizeBooking()">Book Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <nav id="foot_parent" class="navbar"></nav>
+
+    <div id="spinner-overlay" style="display: none;">
+        <div id="spinner" class="spinner"></div>
+    </div>
+
+</body>
+<script>
+    let chosenPackage = document.querySelector('.chosenPackage');
+    let orderSummary = document.querySelector('#mainSection > h2');
+    let finalCost = document.querySelector('#finalCost');
+    let paymentDetails = document.querySelector('#paymentDetails');
+    let chooseDate = document.querySelector('#chooseDate');
+
+    let newBookingDate = new Date();
+
+    const API = "https://648977ba5fa58521caafa573.mockapi.io/tours";
+
+    let package_id = localStorage.getItem("package_id") || null;
+
+    if (package_id === null) {
+        orderSummary.textContent = "No Package Selected";
+        chosenPackage.innerHTML = null;
+    }
+    else {
+        let confirmation_data = {}
+        fetchPackageData();
+
+        function finalizeBooking (){
+            let spinnerOverlay = document.getElementById('spinner-overlay');
+
+            if (localStorage.getItem("isLoggedIn") === "false" || !localStorage.getItem("isLoggedIn")) {
+                alert("Please log in first.");
+                window.location.href = "login.html";
+                return;
+            }
+
+            if(paymentDetails.textContent == ""){
+                alert("Please select a payment method");
+            }else if(chooseDate.value == ""){
+                alert("Please select a date");
+            }else{
+                let package_name = document.querySelector('.packageInformation > h3');
+                
+                console.log({
+                    package_name : package_name.textContent,
+                    tourdate : chooseDate.value,
+                    timestamp : String(newBookingDate),
+                    bill : Number(finalCost.textContent),
+                });
+
+                let trp_confirm = {
+                    package_name : package_name.textContent,
+                    tourdate : chooseDate.value,
+                    timestamp : String(newBookingDate),
+                    bill : Number(finalCost.textContent),
+                    tour_data: confirmation_data
+                }
+                let confirmation_data_local = JSON.parse(localStorage.getItem("confirmation_data"))
+                if (confirmation_data_local) {
+                    
+                    confirmation_data_local.push(trp_confirm)
+                   
+                    localStorage.setItem("confirmation_data" , JSON.stringify(confirmation_data_local))
+                }
+                else{
+                    localStorage.setItem("confirmation_data" , JSON.stringify([trp_confirm]))
+
+                }
+                spinnerOverlay.style.display = 'flex';
+
+                setTimeout(function() {
+                    spinnerOverlay.style.display = 'none';
+                    alert('Booking Successful!');
+                    window.location.href = 'index.html';
+                }, 5000);
+            }
+        }
+
+        function selectPayment(value) {
+            if (value == "cash") {
+                paymentDetails.textContent = "Note: You have to pay on Arrival";
+            } else {
+                paymentDetails.textContent = "Please use the cash option to pay";
+            } 
+        }
+
+        async function fetchPackageData() {
+            try {
+                let res = await fetch(`${API}/${package_id}`);
+                let data = await res.json();
+                chosenPackage.innerHTML = null;
+                chosenPackage.append(createPackageCard(data));
+                confirmation_data = data
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        function createPackageCard(element) {
+            let div = document.createElement('div');
+            div.className = "packageCard";
+            div.style.wordWrap = "break-word";
+            div.innerHTML = `<div class="imgHolder">
+                        <img src="${element.image[0]}" width="100vw" class="packageImg" alt="">
+                    </div>
+                    <div class="packageInformation">
+                        <p>${element.duration}</p>
+                            <h3>${element.title}</h3>
+                            <p>${element.destination}</p>
+                        <div class="inputPersonCount">
+                            <p>Total Member : </p>
+                            <button class="addMember">+</button>
+                            <input type="number" value="1" class="memberCount" min="1">
+                            <button class="removeMember">-</button>
+                        </div>
+                    </div>
+                    <div class="packagePrice">${element.price}</div>`;
+            finalCost.textContent = element.price;
+            let price = div.querySelector('.packagePrice');
+            let memberCount = div.querySelector('.memberCount');
+            let addMember = div.querySelector('.addMember');
+            addMember.addEventListener('click', () => {
+                memberCount.value++;
+                price.textContent = Number(price.textContent) + element.price;
+                finalCost.textContent = price.textContent;
+            })
+            let removeMember = div.querySelector('.removeMember');
+            removeMember.addEventListener('click', () => {
+                memberCount.value--;
+                if(Number(memberCount.value) == 0){
+                   emptyCart();
+                }
+                price.textContent = Number(price.textContent) - element.price;
+                finalCost.textContent = price.textContent;
+            })
+            return div;
+        }
+
+        function emptyCart(){
+            let packageCard = document.querySelector('.packageCard');
+                    localStorage.removeItem('package_id');
+                    packageCard.innerHTML = "";
+                    window.location.reload();
+        }
+    }
+</script>
+<script src="navbar.js"></script>
+<!-- <script src="checkout.js"></script> -->
+</html>

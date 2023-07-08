@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script
+    src="https://kit.fontawesome.com/7a4d6432b5.js"
+    crossorigin="anonymous"
+  ></script>
+    <title>Document</title>
+    <link rel="stylesheet" href="styles/navbar.css">
+    <link rel="stylesheet" href="styles/viewDetails.css">
+</head>
+
+<body>
+    <nav id="nav_parent" class="navbar"></nav>
+
+    <div class="carausol-slider">
+        <div class="carousel">
+            <div class="carousel-inner" id="package_parent"></div>
+            <button class="carousel-prev service-btn" >❮</button>
+            <button class="carousel-next service-btn">❯</button>
+        </div>
+        
+        <section id="description">
+            <div id="maindescr"></div>
+            <div id="pricedescr">
+                <div id="pricecard">
+                    <p>₹ <span id="priceshow">Cost</span> per adult onwards</p>
+                    <button class="service-btn" id="booknow">Book Now</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+        <div class="footer" id="foot_parent"></div>
+
+</body>
+<script src="navbar.js"></script>
+<script>
+
+
+    let package_id = JSON.parse(localStorage.getItem("package_id")) || null;
+    let body = document.querySelector('body');
+    if (package_id == null) {
+        alert(`Please choose package`);
+        window.location.href = "user_packages.html";
+    } else {
+        function changeArrow() {
+            let arrow = document.querySelector(".fa-sharp");
+            arrow.classList.toggle("fa-angle-up");
+        }
+
+
+        let fetchdescr = document.querySelector("#fetchdescr");
+        let priceshow = document.querySelector('#priceshow');
+        let similardiv = document.querySelector("#similardiv");
+
+        const API = "https://648977ba5fa58521caafa573.mockapi.io/tours";
+
+        let slider_div = document.querySelector('#package_parent');
+        fetchData();
+
+
+        function fetchData() {
+            let data = package_id;
+            console.log(data);
+            // imgdata
+            let imgarray = data.image;
+            slider_div.innerHTML = "";
+            imgarray.forEach(element => {
+                slider_div.append(CreateImageSlider(element));
+            });
+
+            // maindata
+            Adddata(data);
+        }
+
+        function Adddata(data) {
+            priceshow.textContent = data.price;
+            let fetchdescr = document.createElement('div');
+            fetchdescr.className = "fetchdescr";
+            fetchdescr.innerHTML = `
+                <h1 id="title">${data.title}</h1>
+                <p><span><i class="fa-solid fa-clock fa-spin"></i></span> ${data.duration}</p>
+                <p><span><i class="fa-solid fa-location-dot fa-flip"></i></span> ${data.location}</p>
+                <p><i class="fa-solid fa-map-location"></i> ${data.destination}</p>
+                <h2>Tour Itinerary</h2>
+                <div class="tour_descr">
+                    <details>
+                        <summary onclick="changeArrow()">Description <i class="fa-sharp fa-solid fa-angle-down"></i>
+                        </summary>
+                        <ul>
+                            <li>Hello</li>
+                            <li>World</li>
+                        </ul>
+                    </details>
+                </div>
+           
+            `;
+            let maindiv = document.querySelector('#maindescr')
+            maindiv.innerHTML = fetchdescr.innerHTML + maindiv.innerHTML;
+
+
+            let tour_descr = document.querySelector('.tour_descr');
+            tour_descr.innerHTML = "";
+            let tour = data.tour;
+            tour.forEach(element => {
+                tour_descr.append(CreateTourDescr(element));
+            });
+
+
+        }
+
+        function CreateTourDescr(element) {
+            let tourdetails = document.createElement('div');
+            tourdetails.className = "tourdetails";
+            tourdetails.innerHTML = `<details>
+                        <summary onclick="changeArrow()">${element.title}<i class="fa-sharp fa-solid fa-angle-down"></i>
+                        </summary>
+                        <ul>
+                            <li>${element.description}</li>
+                        </ul>
+                    </details>`;
+
+            return tourdetails;
+        }
+        function CreateImageSlider(element) {
+            let div = document.createElement('div');
+            // div.className = "w3-display-container mySlides";
+            // div.innerHTML = `<img src="${element}" class="slider_img" >`;
+            div.className = "carousel-item active";
+            div.innerHTML = `
+                <div class="s-card" >
+                    <div class="abcde">
+                        <img src="${element}">
+                        
+                    </div>
+            </div>`;
+            return div;
+        }
+
+        // slider
+  //   carausol code
+
+  function carausolsetting() {
+    const carouselInner = document.querySelector(".carousel-inner");
+    const carouselItems = document.querySelectorAll(".carousel-item");
+    const carouselItemWidth = carouselItems[0].offsetWidth;
+    let currentIndex = 0;
+    const prevButton = document.querySelector(".carousel-prev");
+    const nextButton = document.querySelector(".carousel-next");
+    
+    function slideNext() {
+      const carouselInner = document.querySelector(".carousel-inner");
+      const carouselItems = document.querySelectorAll(".carousel-item");
+      const carouselItemWidth = carouselItems[0].offsetWidth;
+      if (currentIndex === carouselItems.length - 1) {
+        currentIndex = 0;
+      } else {
+        currentIndex = currentIndex + 1;
+      }
+      carouselInner.style.transform = `translateX(-${
+        currentIndex * carouselItemWidth
+      }px)`;
+    }
+
+    function slidePrev() {
+      const carouselInner = document.querySelector(".carousel-inner");
+      const carouselItems = document.querySelectorAll(".carousel-item");
+      const carouselItemWidth = carouselItems[0].offsetWidth;
+      if (currentIndex === 0) {
+        currentIndex = carouselItems.length - 1;
+      } else {
+        currentIndex = currentIndex - 1;
+      }
+      carouselInner.style.transform = `translateX(-${
+        currentIndex * carouselItemWidth
+      }px)`;
+    }
+
+    nextButton.addEventListener("click", slideNext);
+    prevButton.addEventListener("click", slidePrev);
+    // setInterval(slideNext, 5000);
+  }
+  carausolsetting();
+    }
+
+
+
+    // $(window).on('load', function () {
+    //     $(body).Visibililty(true);
+    //     $(".loader-wrapper").fadeOut("slow");
+    // })
+
+</script>
+</body>
+
+</html>

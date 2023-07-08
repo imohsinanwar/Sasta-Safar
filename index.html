@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/navbar.css" />
+    <link rel="stylesheet" href="styles/index.css" />
+    <script
+      src="https://kit.fontawesome.com/7a4d6432b5.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>Home</title>
+  </head>
+
+  <body>
+    <!-- navbar  -->
+    <nav id="nav_parent" class="navbar">
+      
+    </nav>
+    <div class="navbar2">
+      <p>Menu</p>
+      <div>
+        <a class="tooltip" href="dashboard.html">
+          <img src="assets/most-recent.png" alt="">
+          <span class="tooltiptext">Dashboard</span>
+        </a>
+        <a class="tooltip" href="message.html">
+          <img src="assets/subscription.png" alt="">
+          <span class="tooltiptext">My Tickets</span>
+        </a>
+        
+      </div>
+      <p>Library</p>
+      <div>
+        <a class="tooltip" href="#">
+          <img src="assets/star.png" alt="">
+          <span class="tooltiptext">Favourite</span>
+        </a>
+        <a class="tooltip" href="#">
+          <img src="assets/sms3.png" alt="">
+          <span class="tooltiptext">Message</span>
+        </a>
+        <a class="tooltip" href="#">
+          <img src="assets/cart_shop.png" alt="">
+          <span class="tooltiptext">Cart</span>
+        </a>
+
+      </div>
+      <p>Setting</p>
+      <div>
+        <a class="tooltip" href="#">
+          <img src="assets/sett.png" alt="">
+          <span class="tooltiptext">Setting</span>
+        </a>
+        <a class="tooltip" href="#">
+          <img src="assets/customer-service.png" alt="">
+          <span class="tooltiptext">Cusomer Support</span>
+        </a>
+      </div>
+    </div>
+    <!-- navbar  -->
+
+    <!-- pagesection -->
+    <div class="header">
+      <div class="h-info">
+        <img class="abcd" src="assets/wonders2.png" alt="" />
+        <h1>Welcome To Sasta Safar</h1>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
+          suscipit officiis illo accusantium quasi.
+        </p>
+        <div class="search">
+          <input type="text" placeholder="Enter location" />
+          <button id="search-results-btn">Search</button>
+          <div id="show-search-results"></div>
+        </div>
+      </div>
+      <div class="h-img">
+        <img src="assets/family.png" alt="" />
+      </div>
+    </div>
+
+    <div class="header2" id="service-parent">
+      <div class="service-info">
+        <div class="header-titles">
+          <h4>01</h4>
+        <h2>OUR SERVICE</h2>
+        </div>
+        <p>
+          Some quick example text to build on the card title and make up the
+          bulk of the card's content.
+        </p>
+      </div>
+    </div>
+
+    <div class="header3">
+      <div class="service-info">
+        <div class="header-titles">
+          <h4>02</h4>
+        <h2>OUR SERVICE</h2>
+        </div>
+        <p>
+          Some quick example text to build on the card title and make up the
+          bulk of the card's content.
+        </p>
+      </div>
+      <div class="car-slide">
+        <div class="carousel">
+          <div class="carousel-inner" id="package_parent"></div>
+        </div>
+        <button class="carousel-prev service-btn"><i class="fa-solid fa-circle-chevron-left"></i></button>
+        <button class="carousel-next service-btn"><i class="fa-solid fa-circle-chevron-right"></i></button>
+      </div>
+    </div>
+    <!-- pagesection 2-->
+
+    <h1 class="conct">Contact Us</h1>
+    <div class="foot-correct">
+      <div class="footer" id="foot_parent"></div>
+    </div>
+    <div class="copy-right">@2022 Every Sunday</div>
+  </body>
+</html>
+
+<script src="navbar.js"></script>
+
+<script>
+  let data_services = [
+    {
+      title: "Service title1",
+      img: "assets/taj-mahal3.jpg",
+      info: "Some quick example text to build on the card title and make up the",
+    },
+    {
+      title: "Service title2",
+      img: "assets/himalya.jpg",
+      info: "Some quick example text to build on the card title and make up the",
+    },
+    {
+      title: "Service title3",
+      img: "assets/tribe-chattisgarh.jpg",
+      info: "Some quick example text to build on the card title and make up the",
+    },
+  ];
+
+  let service_parent = document.getElementById("service-parent");
+
+  function showServices(data) {
+    data.forEach((element) => {
+      let { title, img, info } = element;
+      console.log(title);
+
+      let div = document.createElement("div");
+      div.classList.add("s-card");
+      div.innerHTML = `
+        <img src="${img}" />
+        <div class="s-card-info">
+          <h3>Card title</h3>
+          <p>
+            Some quick example text to build on the card title and make up the
+          </p>
+        </div>`;
+      service_parent.append(div);
+    });
+    
+  }
+
+  showServices(data_services);
+
+  let package_parent = document.getElementById("package_parent");
+
+  let data_package = [
+    {
+      title: "Taj Mahal",
+      img: "assets/taj-mahal3.jpg",
+      info: "lorem lolo",
+      rating: 4.5,
+      price: 16000
+    },
+    {
+      title: "shimla Himalayas Tour",
+      img: "assets/himalya.jpg",
+      info: "lorem lolo",
+      rating: 3.5,
+      price: 16564
+    },
+    {
+      title: "India Gate",
+      img: "assets/india-gate.jpg",
+      info: "lorem lolo",
+      rating: 4.9,
+      price: 65415
+    },
+    {
+      title: "Sunderbans Forest Getaway",
+      img: "assets/sundarban.jpg",
+      info: "lorem lolo",
+      rating: 3.5,
+      price: 66465
+    },
+    {
+      title: "Tribal Tours Of Chattisgarh",
+      img: "assets/tribe-chattisgarh.jpg",
+      info: "lorem lolo",
+      rating: 3.5,
+      price: 545454
+    },
+    {
+      title: "Laal Kila",
+      img: "assets/red-fort.jpg",
+      info: "lorem lolo",
+      rating: 4.2,
+    },
+    {
+      title: "Effil Tower",
+      img: "assets/effil-tower.jpg",
+      info: "lorem lolo",
+      rating: 3.5,
+    },
+
+    {
+      title: "Sunderbans Forest Getaway",
+      img: "assets/sundarban.jpg",
+      info: "lorem lolo",
+      rating: 3.5,
+    },
+  ];
+  function showpackage(data) {
+    // service_parent.innerHTML = null;
+    let arr = [];
+    data.forEach((element) => {
+      let { title, img, info, rating } = element;
+      // console.log(title);
+      let div_main = document.createElement("div");
+      div_main.classList.add("carousel-item");
+      div_main.classList.add("active");
+
+      let div = document.createElement("div");
+      div.classList.add("s-card");
+      div.style.background = `url(${img})`;
+
+      div.innerHTML = `
+      <div class="abcde">
+        <img src="${img}" />
+        <div class="special-pakage">
+            <div>
+                <h4>${title}</h4>
+                <p>${info}</p>
+                </div>
+                <a href="destination.html" class="service-btn">Book now</a>
+                </div>
+                
+                <div class="star">⭐ ${rating}</div></div>`;
+          div_main.append(div);
+        package_parent.append(div_main);
+    });
+  }
+
+  showpackage(data_package);
+
+  //   carausol code
+
+  function carausolsetting() {
+    const carouselInner = document.querySelector(".carousel-inner");
+    const carouselItems = document.querySelectorAll(".carousel-item");
+    const carouselItemWidth = carouselItems[0].offsetWidth;
+    let currentIndex = 0;
+    const prevButton = document.querySelector(".carousel-prev");
+    const nextButton = document.querySelector(".carousel-next");
+
+    function slideNext() {
+      if (currentIndex === carouselItems.length - 2) {
+        currentIndex = 0;
+      } else {
+        currentIndex = currentIndex + 1;
+      }
+      carouselInner.style.transform = `translateX(-${
+        currentIndex * carouselItemWidth
+      }px)`;
+    }
+
+    function slidePrev() {
+      if (currentIndex === 0) {
+        currentIndex = carouselItems.length - 1;
+      } else {
+        currentIndex = currentIndex - 1;
+      }
+      carouselInner.style.transform = `translateX(-${
+        currentIndex * carouselItemWidth
+      }px)`;
+    }
+
+    nextButton.addEventListener("click", slideNext);
+    prevButton.addEventListener("click", slidePrev);
+    setInterval(slideNext, 5000);
+  }
+  carausolsetting();
+  //   carausol code
+</script>
