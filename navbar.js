@@ -53,7 +53,7 @@ function addNavbarToPage() {
         <img class="abs" src="assets/abs2.png" alt="" />
         <a href="https://www.facebook.com/imohsinanwar" target="_blank"><i class="fa-brands fa-square-facebook"></i></a>
         <a href="https://www.instagram.com/imohsinanwar" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-        <a href="https://github.com/imohsinanwar-source" target="_blank"><i class="fa-brands fa-square-github"></i></a>
+        <a href="https://github.com/imohsinanwar" target="_blank"><i class="fa-brands fa-square-github"></i></a>
         <a href="#" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
         
         
